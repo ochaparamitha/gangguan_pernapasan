@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Detektif Pernapasan IPAS Kelas 6 SD</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0284c7',
+                            skyblue: '#e0f2fe',
+                            teal: '#0d9488',
+                            lightteal: '#ccfbf1',
+                            pink: '#f43f5e',
+                            lightpink: '#ffe4e6',
+                            yellow: '#eab308',
+                            lightyellow: '#fef9c3',
+                            purple: '#8b5cf6',
+                            bg: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Fredoka', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'fun': '0 8px 0 0 rgba(0, 0, 0, 0.08)',
+                        'fun-active': '0 2px 0 0 rgba(0, 0, 0, 0.08)',
+                        'glow-teal': '0 0 20px rgba(13, 148, 136, 0.3)',
+                        'glow-pink': '0 0 20px rgba(244, 63, 94, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1, h2, h3, h4, .font-fun {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+
+        /* Smooth tab transition */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Pulse and Bounce Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .animate-float {
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar for touch overflow */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Confetti particle animation */
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            animation: dropConfetti 2.5s ease-out forwards;
+        }
+
+        @keyframes dropConfetti {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pb-24 md:pb-8">
+
+    <header class="bg-white sticky top-0 z-40 border-b-4 border-slate-200 shadow-sm px-4 py-3">
+        <div class="max-w-2xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 bg-brand-blue text-white rounded-2xl flex items-center justify-center text-xl shadow-fun animate-float">
+                    <i class="fa-solid font-bold fa-magnifying-glass-location"></i>
+                </div>
+                <div>
+                    <span class="bg-sky-100 text-sky-700 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">IPAS KELAS 6 SD</span>
+                    <h1 class="text-lg md:text-xl font-bold text-slate-800 leading-tight">Detektif Pernapasan</h1>
+                </div>
+            </div>
+
+            <!-- Sound Toggle Button -->
+            <button id="soundToggleBtn" onclick="toggleSound()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-lg transition active:scale-95" title="Suara Efek">
+                <i id="soundIcon" class="fa-solid fa-volume-high text-brand-teal"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto w-full px-4 pt-4 flex-grow">
+
+        <!-- NAV TABS (MOBILE & DESKTOP FRIENDLY) -->
+        <nav class="grid grid-cols-4 gap-2 mb-5 bg-white p-2 rounded-2xl border-2 border-slate-200 shadow-sm">
+            <button onclick="switchTab('portal1')" id="nav-portal1" class="nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-sky-700 bg-sky-100 border-2 border-sky-300 shadow-sm">
+                <i class="fa-solid fa-viruses text-lg mb-1 text-sky-600"></i>
+                <span>1. Faktor</span>
+            </button>
+            <button onclick="switchTab('portal2')" id="nav-portal2" class="nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-slate-500 hover:bg-slate-100">
+                <i class="fa-solid fa-stethoscopes text-lg mb-1 text-brand-teal"></i>
+                <span>2. Detektif</span>
+            </button>
+            <button onclick="switchTab('portal3')" id="nav-portal3" class="nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-slate-500 hover:bg-slate-100">
+                <i class="fa-solid fa-sitemap text-lg mb-1 text-purple-600"></i>
+                <span>3. Alur</span>
+            </button>
+            <button onclick="switchTab('portal4')" id="nav-portal4" class="nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-slate-500 hover:bg-slate-100">
+                <i class="fa-solid fa-gamepad text-lg mb-1 text-brand-pink"></i>
+                <span>4. Kuis</span>
+            </button>
+        </nav>
+
+        <section id="portal1" class="tab-content active space-y-4">
+            <!-- Banner Intro -->
+            <div class="bg-gradient-to-r from-sky-400 to-sky-500 rounded-3xl p-5 text-white shadow-fun relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-white/20 text-white font-semibold text-xs px-3 py-1 rounded-full uppercase tracking-wide">PORTAL 1</span>
+                    <h2 class="text-2xl font-bold mt-1">Faktor Penyebab Gangguan</h2>
+                    <p class="text-sky-100 text-sm mt-1">Mengapa organ pernapasan kita bisa terganggu? Tap tiap kartu di bawah ini untuk menyelidiki rahasianya!</p>
+                </div>
+                <i class="fa-solid fa-shield-virus absolute right-3 -bottom-3 text-7xl text-white/20"></i>
+            </div>
+
+            <!-- List 5 Factors -->
+            <div class="grid grid-cols-1 gap-3">
+                <!-- Card 1 -->
+                <div onclick="openFactorModal('factor1')" class="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-fun hover:border-sky-400 active:scale-98 transition cursor-pointer flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                            🦠
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">1. Infeksi Mikroorganisme</h3>
+                            <p class="text-xs text-slate-500">Virus & Bakteri penyusup tubuh</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-chevron-right text-sky-500 text-xl"></i>
+                </div>
+
+                <!-- Card 2 -->
+                <div onclick="openFactorModal('factor2')" class="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-fun hover:border-sky-400 active:scale-98 transition cursor-pointer flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                            🧬
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">2. Faktor Genetik (Keturunan)</h3>
+                            <p class="text-xs text-slate-500">Bawaan dari garis keturunan keluarga</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-chevron-right text-sky-500 text-xl"></i>
+                </div>
+
+                <!-- Card 3 -->
+                <div onclick="openFactorModal('factor3')" class="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-fun hover:border-sky-400 active:scale-98 transition cursor-pointer flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                            🏡
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">3. Kondisi Lingkungan</h3>
+                            <p class="text-xs text-slate-500">Ruangan lembap, berdebu & minim udara segar</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-chevron-right text-sky-500 text-xl"></i>
+                </div>
+
+                <!-- Card 4 -->
+                <div onclick="openFactorModal('factor4')" class="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-fun hover:border-sky-400 active:scale-98 transition cursor-pointer flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                            🚬
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">4. Gaya Hidup Tidak Sehat</h3>
+                            <p class="text-xs text-slate-500">Asap rokok, vape & malas berolahraga</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-chevron-right text-sky-500 text-xl"></i>
+                </div>
+
+                <!-- Card 5 -->
+                <div onclick="openFactorModal('factor5')" class="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-fun hover:border-sky-400 active:scale-98 transition cursor-pointer flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                            🏭
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">5. Polusi Udara</h3>
+                            <p class="text-xs text-slate-500">Asap kendaraan, pabrik & sampah bakar</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-chevron-right text-sky-500 text-xl"></i>
+                </div>
+            </div>
+
+            <!-- Quick Tip Note -->
+            <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4 flex items-start gap-3 text-amber-800 text-xs">
+                <i class="fa-solid fa-lightbulb text-amber-500 text-xl mt-0.5"></i>
+                <div>
+                    <strong class="font-bold text-sm block mb-0.5">Tahukah Kamu Detektif?</strong>
+                    Sebagian besar gangguan pernapasan bisa dicegah dengan rajin mencuci tangan, memakai masker saat udara kotor, dan tidak merokok!
+                </div>
+            </div>
+        </section>
+
+        <section id="portal2" class="tab-content space-y-4">
+            <!-- Banner Intro -->
+            <div class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-3xl p-5 text-white shadow-fun relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-white/20 text-white font-semibold text-xs px-3 py-1 rounded-full uppercase tracking-wide">PORTAL 2</span>
+                    <h2 class="text-2xl font-bold mt-1">Detektif Gangguan Pernapasan</h2>
+                    <p class="text-teal-100 text-sm mt-1">Pelajari jenis gangguan pernapasan dan amati diagram mikroskopisnya!</p>
+                </div>
+                <i class="fa-solid fa-lungs text-7xl text-white/20 absolute right-3 -bottom-3"></i>
+            </div>
+
+            <!-- Disease Selector Pills -->
+            <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                <button onclick="showDisorder('flu')" id="btn-disorder-flu" class="disorder-btn active bg-teal-600 text-white font-fun font-bold text-xs px-4 py-2.5 rounded-full whitespace-nowrap shadow-sm border-2 border-teal-600">🤧 Influenza</button>
+                <button onclick="showDisorder('tbc')" id="btn-disorder-tbc" class="disorder-btn bg-white text-slate-700 font-fun font-bold text-xs px-4 py-2.5 rounded-full whitespace-nowrap border-2 border-slate-200">🫁 Tuberkulosis (TBC)</button>
+                <button onclick="showDisorder('pneumonia')" id="btn-disorder-pneumonia" class="disorder-btn bg-white text-slate-700 font-fun font-bold text-xs px-4 py-2.5 rounded-full whitespace-nowrap border-2 border-slate-200">🫧 Pneumonia</button>
+                <button onclick="showDisorder('asma')" id="btn-disorder-asma" class="disorder-btn bg-white text-slate-700 font-fun font-bold text-xs px-4 py-2.5 rounded-full whitespace-nowrap border-2 border-slate-200">🫁 Asma</button>
+                <button onclick="showDisorder('ispa')" id="btn-disorder-ispa" class="disorder-btn bg-white text-slate-700 font-fun font-bold text-xs px-4 py-2.5 rounded-full whitespace-nowrap border-2 border-slate-200">😷 ISPA</button>
+            </div>
+
+            <!-- Disorder Dynamic Content Box -->
+            <div id="disorderDetailCard" class="bg-white border-2 border-slate-200 rounded-3xl p-5 shadow-fun space-y-4">
+                <!-- Content will be injected via JS -->
+            </div>
+        </section>
+
+        <section id="portal3" class="tab-content space-y-4">
+            <!-- Banner Intro -->
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-5 text-white shadow-fun relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-white/20 text-white font-semibold text-xs px-3 py-1 rounded-full uppercase tracking-wide">PORTAL 3</span>
+                    <h2 class="text-2xl font-bold mt-1">Tabel & Alur Sebab-Akibat</h2>
+                    <p class="text-purple-100 text-sm mt-1">Bandingkan ciri-ciri gangguan dan buat simulasi rantai reaksi penyakit!</p>
+                </div>
+                <i class="fa-solid fa-diagram-project text-7xl text-white/20 absolute right-3 -bottom-3"></i>
+            </div>
+
+            <!-- Sub Navigation Tabs -->
+            <div class="grid grid-cols-2 gap-2 bg-slate-200 p-1 rounded-2xl">
+                <button onclick="switchSubTab('table')" id="sub-btn-table" class="py-2 rounded-xl font-fun font-bold text-xs md:text-sm bg-white text-purple-700 shadow-sm">📊 Tabel Komparasi</button>
+                <button onclick="switchSubTab('flowchart')" id="sub-btn-flowchart" class="py-2 rounded-xl font-fun font-bold text-xs md:text-sm text-slate-600 hover:text-slate-800">🔄 Alur Sebab-Akibat</button>
+            </div>
+
+            <!-- VIEW 1: COMPARISON TABLE -->
+            <div id="subview-table" class="space-y-3">
+                <p class="text-xs text-slate-500">Tap baris tabel untuk menyorot detail gangguan pernapasan:</p>
+
+                <div class="overflow-hidden border-2 border-slate-200 rounded-2xl bg-white shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm">
+                            <thead class="bg-purple-100 text-purple-900 font-fun border-b border-purple-200">
+                                <tr>
+                                    <th class="p-3 font-bold">Gangguan</th>
+                                    <th class="p-3 font-bold">Penyebab Utama</th>
+                                    <th class="p-3 font-bold">Ciri Penting</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr onclick="highlightTableRow(this)" class="hover:bg-purple-50 transition cursor-pointer">
+                                    <td class="p-3 font-bold text-rose-600 flex items-center gap-1.5"><span class="text-base">🤧</span> Influenza</td>
+                                    <td class="p-3"><span class="bg-rose-100 text-rose-800 font-semibold px-2 py-0.5 rounded">Virus</span></td>
+                                    <td class="p-3">Demam, batuk, pilek, pegal-pegal. Mudah menular.</td>
+                                </tr>
+                                <tr onclick="highlightTableRow(this)" class="hover:bg-purple-50 transition cursor-pointer">
+                                    <td class="p-3 font-bold text-amber-600 flex items-center gap-1.5"><span class="text-base">🫁</span> TBC</td>
+                                    <td class="p-3"><span class="bg-amber-100 text-amber-800 font-semibold px-2 py-0.5 rounded">Bakteri</span> Mycobacterium</td>
+                                    <td class="p-3">Batuk lama (>2 minggu), keringat malam, BB turun.</td>
+                                </tr>
+                                <tr onclick="highlightTableRow(this)" class="hover:bg-purple-50 transition cursor-pointer">
+                                    <td class="p-3 font-bold text-teal-600 flex items-center gap-1.5"><span class="text-base">🫧</span> Pneumonia</td>
+                                    <td class="p-3"><span class="bg-teal-100 text-teal-800 font-semibold px-2 py-0.5 rounded">Bakteri/Virus</span></td>
+                                    <td class="p-3">Radang kantung udara (alveoli) terisi cairan/nanah.</td>
+                                </tr>
+                                <tr onclick="highlightTableRow(this)" class="hover:bg-purple-50 transition cursor-pointer">
+                                    <td class="p-3 font-bold text-sky-600 flex items-center gap-1.5"><span class="text-base">🫁</span> Asma</td>
+                                    <td class="p-3"><span class="bg-sky-100 text-sky-800 font-semibold px-2 py-0.5 rounded">Genetik/Alergen</span></td>
+                                    <td class="p-3">Saluran napas menyempit & bengkak, ada suara <strong>"Mengi"</strong>.</td>
+                                </tr>
+                                <tr onclick="highlightTableRow(this)" class="hover:bg-purple-50 transition cursor-pointer">
+                                    <td class="p-3 font-bold text-slate-600 flex items-center gap-1.5"><span class="text-base">😷</span> ISPA</td>
+                                    <td class="p-3"><span class="bg-slate-100 text-slate-800 font-semibold px-2 py-0.5 rounded">Polusi / Infeksi</span></td>
+                                    <td class="p-3">Infeksi akut saluran napas atas pemicu asap kabut.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 2: INTERACTIVE FLOWCHART -->
+            <div id="subview-flowchart" class="hidden space-y-4">
+                <div class="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-sm">
+                    <label class="block font-fun font-bold text-slate-700 mb-2 text-sm">Pilih Faktor Pemicu Awal:</label>
+                    <select id="flowchartSelector" onchange="renderFlowchart()" class="w-full bg-purple-50 border-2 border-purple-300 rounded-xl p-3 font-bold text-purple-900 text-sm focus:outline-none focus:border-purple-500">
+                        <option value="tbc">🧬 Bakteri Mycobacterium tuberculosis</option>
+                        <option value="flu">🦠 Virus Influenza</option>
+                        <option value="polusi">🏭 Polusi Udara & Asap Pabrik</option>
+                        <option value="asma">🌾 Debu / Bulu Hewan / Genetik</option>
+                        <option value="pneumonia">🧫 Infeksi Bakteri/Virus Paru-Paru</option>
+                    </select>
+                </div>
+
+                <!-- Animated Flow Chart Result Container -->
+                <div id="flowchartResult" class="space-y-3">
+                    <!-- Dynamic blocks generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <section id="portal4" class="tab-content space-y-4">
+            <!-- Banner Intro -->
+            <div class="bg-gradient-to-r from-rose-500 to-pink-500 rounded-3xl p-5 text-white shadow-fun relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-white/20 text-white font-semibold text-xs px-3 py-1 rounded-full uppercase tracking-wide">PORTAL 4</span>
+                    <h2 class="text-2xl font-bold mt-1">Kuis Detektif Pernapasan</h2>
+                    <p class="text-rose-100 text-sm mt-1">Uji kemampuan analisismu dengan 5 kasus detektif nyata!</p>
+                </div>
+                <i class="fa-solid fa-graduation-cap text-7xl text-white/20 absolute right-3 -bottom-3"></i>
+            </div>
+
+            <!-- Quiz Main Container -->
+            <div id="quizContainer" class="bg-white border-2 border-slate-200 rounded-3xl p-5 shadow-fun space-y-4 relative">
+                <!-- Progress Header -->
+                <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-100 pb-3">
+                    <span id="quizStepText">Soal 1 dari 5</span>
+                    <div class="w-1/2 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div id="quizProgressBar" class="bg-brand-pink h-full w-1/5 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Question Text -->
+                <div id="quizQuestionBox" class="space-y-2">
+                    <span class="bg-pink-100 text-pink-700 text-xs font-bold px-2.5 py-1 rounded-lg">Kasus Detektif</span>
+                    <h3 id="quizQuestion" class="text-base font-bold text-slate-800 leading-snug">
+                        Loading kasus...
+                    </h3>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="quizOptions" class="grid grid-cols-1 gap-2.5 pt-2">
+                    <!-- Option buttons dynamically generated -->
+                </div>
+
+                <!-- Feedback Box -->
+                <div id="quizFeedback" class="hidden p-4 rounded-2xl border-2 space-y-2">
+                    <div id="feedbackHeader" class="flex items-center gap-2 font-fun font-bold text-sm">
+                        <!-- Correct/Wrong Title -->
+                    </div>
+                    <p id="feedbackText" class="text-xs md:text-sm text-slate-700 leading-relaxed"></p>
+                    <button id="nextQuestionBtn" onclick="nextQuestion()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-fun font-bold py-3 rounded-xl shadow-fun active:scale-95 transition mt-2">
+                        Lanjut ke Soal Berikutnya ➔
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result Modal Summary (Hidden initially) -->
+            <div id="quizResultModal" class="hidden bg-white border-2 border-slate-200 rounded-3xl p-6 shadow-fun text-center space-y-4">
+                <div class="w-20 h-20 bg-yellow-100 text-yellow-500 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner animate-bounce">
+                    🏆
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold font-fun text-slate-800">Misi Selesai, Detektif!</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Berikut hasil penyelidikan medis kamu:</p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex justify-around items-center">
+                    <div>
+                        <span class="text-xs text-slate-500 block">Skor Kamu</span>
+                        <strong id="finalScore" class="text-3xl font-fun text-brand-pink">100</strong>
+                    </div>
+                    <div class="h-8 border-r border-slate-200"></div>
+                    <div>
+                        <span class="text-xs text-slate-500 block">Predikat</span>
+                        <strong id="finalBadge" class="text-sm font-fun text-brand-teal">Detektif Handal 🌟</strong>
+                    </div>
+                </div>
+
+                <button onclick="restartQuiz()" class="w-full bg-brand-pink hover:bg-rose-600 text-white font-fun font-bold py-3 rounded-2xl shadow-fun active:scale-95 transition">
+                    🔄 Ulangi Kuis
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="factorModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-end md:items-center justify-center p-0 md:p-4">
+        <div class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg p-5 space-y-4 animate-in slide-in-from-bottom duration-300 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <span id="modalIcon" class="text-2xl">🦠</span>
+                    <h3 id="modalTitle" class="text-lg font-bold font-fun text-slate-800">Judul Faktor</h3>
+                </div>
+                <button onclick="closeFactorModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold hover:bg-slate-200">✕</button>
+            </div>
+
+            <div id="modalBody" class="space-y-3 text-sm text-slate-600 leading-relaxed">
+                <!-- Content injected dynamically -->
+            </div>
+
+            <button onclick="closeFactorModal()" class="w-full bg-brand-blue hover:bg-sky-600 text-white font-fun font-bold py-3 rounded-xl shadow-fun active:scale-95 transition">
+                Paham, Detektif! 👍
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Web Audio API Synthesizer for sound effects without external audio files
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(250, now);
+                osc.frequency.setValueAtTime(180, now + 0.15);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'fanfare') {
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const subOsc = audioCtx.createOscillator();
+                    const subGain = audioCtx.createGain();
+                    subOsc.connect(subGain);
+                    subGain.connect(audioCtx.destination);
+                    subOsc.frequency.setValueAtTime(freq, now + idx * 0.1);
+                    subGain.gain.setValueAtTime(0.12, now + idx * 0.1);
+                    subGain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.1 + 0.25);
+                    subOsc.start(now + idx * 0.1);
+                    subOsc.stop(now + idx * 0.1 + 0.25);
+                });
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            if (soundEnabled) {
+                icon.className = "fa-solid fa-volume-high text-brand-teal";
+            } else {
+                icon.className = "fa-solid fa-volume-xmark text-slate-400";
+            }
+        }
+    </script>
+
+    <script>
+        // Tab Switcher
+        function switchTab(tabId) {
+            playSound('click');
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = "nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-slate-500 hover:bg-slate-100";
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (tabId === 'portal1') {
+                activeNav.className = "nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-sky-700 bg-sky-100 border-2 border-sky-300 shadow-sm";
+            } else if (tabId === 'portal2') {
+                activeNav.className = "nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-teal-700 bg-teal-100 border-2 border-teal-300 shadow-sm";
+                showDisorder('flu'); // default display
+            } else if (tabId === 'portal3') {
+                activeNav.className = "nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-purple-700 bg-purple-100 border-2 border-purple-300 shadow-sm";
+                renderFlowchart();
+            } else if (tabId === 'portal4') {
+                activeNav.className = "nav-btn flex flex-col items-center py-2 px-1 rounded-xl font-fun text-xs md:text-sm font-bold transition text-pink-700 bg-pink-100 border-2 border-pink-300 shadow-sm";
+            }
+        }
+
+        // Factor Modal Data
+        const factorDetails = {
+            factor1: {
+                title: "Infeksi Mikroorganisme",
+                icon: "🦠",
+                body: `
+                    <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 mb-2">
+                        <strong class="text-rose-800 font-bold block mb-1">Penyusup Mikroskopis: Virus & Bakteri</strong>
+                        <p class="text-xs text-rose-700">Mikroorganisme adalah makhluk sangat kecil yang tidak bisa dilihat mata telanjang tanpa mikroskop.</p>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                        <li><strong>Virus:</strong> Menyebabkan Influenza (flu), COVID-19, dan ISPA. Menyebar cepat lewat udara saat bersin/batuk.</li>
+                        <li><strong>Bakteri:</strong> Menyebabkan TBC (Mycobacterium tuberculosis) dan Pneumonia (Streptococcus pneumoniae). Bakteri ini merusak jaringan paru-paru jika tidak diobati.</li>
+                    </ul>
+                `
+            },
+            factor2: {
+                title: "Faktor Genetik (Keturunan)",
+                icon: "🧬",
+                body: `
+                    <div class="bg-purple-50 p-3 rounded-xl border border-purple-200 mb-2">
+                        <strong class="text-purple-800 font-bold block mb-1">Warisan Biologis Keluarga</strong>
+                        <p class="text-xs text-purple-700">Beberapa gangguan pernapasan diturunkan dari orang tua atau leluhur melalui genetik.</p>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                        <li><strong>Asma:</strong> Seseorang yang orang tuanya memiliki riwayat asma atau alergi lebih mudah mengalami penyempitan saluran napas saat terpapar pemicu seperti debu atau udara dingin.</li>
+                        <li><strong>Penting:</strong> Asma bukan penyakit menular, melainkan kondisi sensitivitas bawaan tubuh.</li>
+                    </ul>
+                `
+            },
+            factor3: {
+                title: "Kondisi Lingkungan",
+                icon: "🏡",
+                body: `
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 mb-2">
+                        <strong class="text-amber-800 font-bold block mb-1">Kebersihan Ruang Sekitar</strong>
+                        <p class="text-xs text-amber-700">Lingkungan tempat tinggal sangat mempengaruhi kesehatan paru-paru kita.</p>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                        <li><strong>Lembap & Berjamur:</strong> Ruangan tanpa ventilasi cukup menjadi sarang spora jamur dan bakteri.</li>
+                        <li><strong>Debu & Tungau:</strong> Menempel pada karpet, kasur, atau gorden kotor yang memicu sesak napas dan batuk berulang.</li>
+                    </ul>
+                `
+            },
+            factor4: {
+                title: "Gaya Hidup Tidak Sehat",
+                icon: "🚬",
+                body: `
+                    <div class="bg-red-50 p-3 rounded-xl border border-red-200 mb-2">
+                        <strong class="text-red-800 font-bold block mb-1">Bahaya Merokok & Vape</strong>
+                        <p class="text-xs text-red-700">Rokok konvensional maupun vape mengandung zat beracun mematikan:</p>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                        <li><strong>Nikotin:</strong> Zat adiktif pembikin kecanduan & merusak pembuluh darah.</li>
+                        <li><strong>Tar:</strong> Lengket seperti aspal yang menempel dan mengendap di dalam dinding paru-paru.</li>
+                        <li><strong>Gas Karbon Monoksida (CO):</strong> Menghalangi sel darah membawa oksigen.</li>
+                        <li><strong>Kurang Olahraga:</strong> Menyebabkan kapasitas vital paru-paru melemah.</li>
+                    </ul>
+                `
+            },
+            factor5: {
+                title: "Polusi Udara",
+                icon: "🏭",
+                body: `
+                    <div class="bg-teal-50 p-3 rounded-xl border border-teal-200 mb-2">
+                        <strong class="text-teal-800 font-bold block mb-1">Udara Kotor Di Luar Ruangan</strong>
+                        <p class="text-xs text-teal-700">Gas dan partikel berbahaya hasil pembakaran mengiritasi saluran pernapasan.</p>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                        <li><strong>Asap Kendaraan & Pabrik:</strong> Mengandung gas SO2, NO2, dan partikel halus PM2.5.</li>
+                        <li><strong>Pembakaran Sampah:</strong> Menghasilkan asap pekat iritan yang memicu serangan ISPA mendadak pada anak-anak.</li>
+                    </ul>
+                `
+            }
+        };
+
+        function openFactorModal(key) {
+            playSound('click');
+            const data = factorDetails[key];
+            document.getElementById('modalIcon').innerText = data.icon;
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalBody').innerHTML = data.body;
+            document.getElementById('factorModal').classList.remove('hidden');
+        }
+
+        function closeFactorModal() {
+            playSound('click');
+            document.getElementById('factorModal').classList.add('hidden');
+        }
+    </script>
+
+    <script>
+        const disorderData = {
+            flu: {
+                title: "🤧 Influenza (Flu)",
+                cause: "Infeksi Virus Influenza (Sangat Menular)",
+                symptoms: ["Demam tinggi & menggigil", "Batuk kering & bersin-bersin", "Hidung tersumbat / meler", "Nyeri otot & lemas seluruh tubuh"],
+                description: "Influenza menyerang saluran pernapasan atas (hidung & tenggorokan). Virus menyebar sangat cepat melalui percikan ludah (droplet) saat penderita batuk atau bersin.",
+                diagramHtml: `
+                    <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-4 text-center space-y-2">
+                        <div class="flex justify-center items-center gap-4 text-4xl">
+                            <span>🗣️ 💦</span>
+                            <i class="fa-solid fa-arrow-right text-rose-400 text-xl"></i>
+                            <span>🦠 👃</span>
+                        </div>
+                        <p class="text-xs text-rose-800 font-semibold">Penularan Droplet Virus melalui Udara</p>
+                    </div>
+                `
+            },
+            tbc: {
+                title: "🫁 Tuberkulosis (TBC)",
+                cause: "Infeksi Bakteri Mycobacterium tuberculosis",
+                symptoms: ["Batuk berdahak berlanjut > 2-3 minggu", "Demam dan berkeringat dingin di malam hari", "Nafsu makan hilang & Berat badan turun drastis", "Rasa nyeri dada saat bernapas"],
+                description: "TBC merupakan penyakit menular paru-paru kronis. Bakteri membentuk sarang-sarang kecil di jaringan paru-paru sehingga mengganggu pertukaran gas.",
+                diagramHtml: `
+                    <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4 text-center space-y-2">
+                        <div class="flex justify-center items-center gap-3">
+                            <span class="text-3xl">🫁</span>
+                            <span class="text-2xl text-amber-600 font-bold">+ Bakteri</span>
+                            <i class="fa-solid fa-arrow-right text-amber-400"></i>
+                            <span class="bg-amber-200 text-amber-900 font-bold text-xs px-2.5 py-1 rounded-lg">Sarang Infeksi Paru</span>
+                        </div>
+                        <p class="text-xs text-amber-800 font-semibold">Bakteri merusak dinding alveolus paru-paru</p>
+                    </div>
+                `
+            },
+            pneumonia: {
+                title: "🫧 Pneumonia (Paru-Paru Basah)",
+                cause: "Infeksi Bakteri, Jamur, atau Virus pada Alveolus",
+                symptoms: ["Sesak napas berat & bernapas cepat", "Batuk berdahak kental/bernanah", "Demam tinggi & menggigil", "Nyeri dada tajam saat menarik napas"],
+                description: "Pada Pneumonia, kantung udara (alveoli) mengalami peradangan hebat dan terisi cairan atau nanah, sehingga darah sulit menyerap oksigen.",
+                diagramHtml: `
+                    <!-- SVG DIAGRAM INTERAKTIF ALVEOLI NORMAL VS PNEUMONIA -->
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-600">
+                            <span>DIAGRAM VISUAL ALVEOLI (KANTUNG UDARA)</span>
+                            <span class="bg-teal-100 text-teal-800 px-2 py-0.5 rounded">Perbandingan Interaktif</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-center">
+                            <!-- Alveoli Normal -->
+                            <div class="bg-emerald-50 border border-emerald-300 rounded-xl p-2 flex flex-col items-center">
+                                <span class="font-bold text-xs text-emerald-800 mb-1">Alveoli Normal</span>
+                                <svg viewBox="0 0 100 100" class="w-24 h-24">
+                                    <!-- Sac wall -->
+                                    <path d="M 50,15 C 20,15 15,40 20,65 C 25,85 75,85 80,65 C 85,40 80,15 50,15 Z" fill="#d1fae5" stroke="#10b981" stroke-width="4"/>
+                                    <!-- Clean air space particles -->
+                                    <circle cx="40" cy="40" r="3" fill="#0284c7" opacity="0.6"/>
+                                    <circle cx="60" cy="50" r="3" fill="#0284c7" opacity="0.6"/>
+                                    <circle cx="50" cy="65" r="3" fill="#0284c7" opacity="0.6"/>
+                                    <text x="50" y="48" font-size="8" text-anchor="middle" fill="#047857" font-weight="bold">Udara Bersih</text>
+                                </svg>
+                                <span class="text-[10px] text-emerald-700 mt-1">Kantung kosong & elastis menyerap Oksigen</span>
+                            </div>
+
+                            <!-- Alveoli Pneumonia -->
+                            <div class="bg-rose-50 border border-rose-300 rounded-xl p-2 flex flex-col items-center">
+                                <span class="font-bold text-xs text-rose-800 mb-1">Alveoli Pneumonia</span>
+                                <svg viewBox="0 0 100 100" class="w-24 h-24">
+                                    <!-- Sac wall inflamed -->
+                                    <path d="M 50,15 C 20,15 15,40 20,65 C 25,85 75,85 80,65 C 85,40 80,15 50,15 Z" fill="#ffe4e6" stroke="#f43f5e" stroke-width="6"/>
+                                    <!-- Fluid filling -->
+                                    <path d="M 20,65 C 25,85 75,85 80,65 C 75,50 25,50 20,65 Z" fill="#facc15" opacity="0.8"/>
+                                    <!-- Bacteria dots -->
+                                    <circle cx="35" cy="68" r="2" fill="#be123c"/>
+                                    <circle cx="50" cy="72" r="2" fill="#be123c"/>
+                                    <circle cx="65" cy="66" r="2" fill="#be123c"/>
+                                    <text x="50" y="70" font-size="7" text-anchor="middle" fill="#854d0e" font-weight="bold">Cairan Radang</text>
+                                </svg>
+                                <span class="text-[10px] text-rose-700 mt-1">Terisi cairan/nanah, sulit bernapas!</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            asma: {
+                title: "🫁 Asma",
+                cause: "Faktor Genetik & Hipersensitivitas Pemicu Alergi (Alergen)",
+                symptoms: ["Sesak napas mendadak", "Dada terasa sempit & tertindih", "Batuk terutama malam hari/udara dingin", "Ada suara MENGI (suara tinggi ngik-ngik saat mengembuskan napas)"],
+                description: "Asma adalah penyempitan dan pembengkakan saluran napas disertai produksi lendir berlebih akibat reaksi alergi terhadap debu, asap, atau cuaca dingin.",
+                diagramHtml: `
+                    <!-- SVG DIAGRAM INTERAKTIF SALURAN NAPAS NORMAL VS ASMA -->
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-600">
+                            <span>DIAGRAM POTONGAN SALURAN NAPAS (BRONKUS)</span>
+                            <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded">Visual Suara Mengi</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-center">
+                            <!-- Bronkus Normal -->
+                            <div class="bg-sky-50 border border-sky-300 rounded-xl p-2 flex flex-col items-center">
+                                <span class="font-bold text-xs text-sky-800 mb-1">Saluran Normal</span>
+                                <svg viewBox="0 0 100 100" class="w-24 h-24">
+                                    <!-- Outer ring muscle -->
+                                    <circle cx="50" cy="50" r="40" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/>
+                                    <!-- Inner lumen (wide open) -->
+                                    <circle cx="50" cy="50" r="26" fill="#ffffff" stroke="#38bdf8" stroke-width="2"/>
+                                    <text x="50" y="53" font-size="8" text-anchor="middle" fill="#0369a1" font-weight="bold">Longgar</text>
+                                </svg>
+                                <span class="text-[10px] text-sky-700 mt-1">Udara mengalir lancar tanpa hambatan</span>
+                            </div>
+
+                            <!-- Bronkus Asma -->
+                            <div class="bg-amber-50 border border-amber-300 rounded-xl p-2 flex flex-col items-center">
+                                <span class="font-bold text-xs text-amber-800 mb-1">Saluran Asma</span>
+                                <svg viewBox="0 0 100 100" class="w-24 h-24">
+                                    <!-- Outer muscle contracted/thickened -->
+                                    <circle cx="50" cy="50" r="40" fill="#fcd34d" stroke="#d97706" stroke-width="8"/>
+                                    <!-- Inner mucosa swollen -->
+                                    <circle cx="50" cy="50" r="22" fill="#fef3c7" stroke="#dc2626" stroke-width="4"/>
+                                    <!-- Narrow lumen -->
+                                    <circle cx="50" cy="50" r="8" fill="#ffffff"/>
+                                    <text x="50" y="52" font-size="6" text-anchor="middle" fill="#b91c1c" font-weight="bold">Menyempit</text>
+                                </svg>
+                                <span class="text-[10px] text-amber-800 mt-1">Sangat sempit ➔ Muncul suara <strong>Mengi!</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            ispa: {
+                title: "😷 ISPA (Infeksi Saluran Pernapasan Akut)",
+                cause: "Infeksi Akut dipicu Polusi Udara Berat & Virus",
+                symptoms: ["Batuk & Tenggorokan terasa gatal/nyeri", "Hidung tersumbat", "Demam ringan", "Suara serak"],
+                description: "ISPA menyerang organ pernapasan mulai dari hidung hingga tenggorokan secara mendadak. Sangat sering melonjak saat terjadi kabut asap polusi udara.",
+                diagramHtml: `
+                    <div class="bg-slate-100 border-2 border-slate-300 rounded-2xl p-4 text-center space-y-2">
+                        <div class="flex justify-center items-center gap-3">
+                            <span class="text-3xl">🏭 🚗</span>
+                            <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                            <span class="text-3xl">💨 😷</span>
+                        </div>
+                        <p class="text-xs text-slate-700 font-semibold">Paparan polusi memicu iritasi dan peradangan akut</p>
+                    </div>
+                `
+            }
+        };
+
+        function showDisorder(key) {
+            playSound('click');
+            // update buttons
+            document.querySelectorAll('.disorder-btn').forEach(btn => {
+                btn.className = "disorder-btn bg-white text-slate-700 font-fun font-bold text-xs px-4 py-2.5 rounded-full whitespace-nowrap border-2 border-slate-200";
+            });
+            const activeBtn = document.getElementById('btn-disorder-' + key);
+            if (activeBtn) {
+                activeBtn.className = "disorder-btn active bg-teal-600 text-white font-fun font-bold text-xs px-4 py-2.5 rounded-full whitespace-nowrap shadow-sm border-2 border-teal-600";
+            }
+
+            const data = disorderData[key];
+            const container = document.getElementById('disorderDetailCard');
+
+            let symptomsList = data.symptoms.map(s => `<li class="flex items-start gap-2"><i class="fa-solid fa-check-circle text-teal-500 mt-0.5"></i> <span>${s}</span></li>`).join('');
+
+            container.innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 class="text-xl font-bold font-fun text-slate-800">${data.title}</h3>
+                </div>
+
+                <div class="bg-teal-50 border border-teal-200 rounded-2xl p-3">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-teal-700 block mb-0.5">Penyebab Utama:</span>
+                    <strong class="text-sm font-bold text-teal-900">${data.cause}</strong>
+                </div>
+
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">${data.description}</p>
+
+                ${data.diagramHtml}
+
+                <div class="space-y-2">
+                    <h4 class="font-fun font-bold text-slate-800 text-sm">Gejala-Gejala Utama:</h4>
+                    <ul class="space-y-1.5 text-xs text-slate-700">
+                        ${symptomsList}
+                    </ul>
+                </div>
+            `;
+        }
+    </script>
+
+    <script>
+        function switchSubTab(sub) {
+            playSound('click');
+            if (sub === 'table') {
+                document.getElementById('subview-table').classList.remove('hidden');
+                document.getElementById('subview-flowchart').classList.add('hidden');
+                document.getElementById('sub-btn-table').className = "py-2 rounded-xl font-fun font-bold text-xs md:text-sm bg-white text-purple-700 shadow-sm";
+                document.getElementById('sub-btn-flowchart').className = "py-2 rounded-xl font-fun font-bold text-xs md:text-sm text-slate-600 hover:text-slate-800";
+            } else {
+                document.getElementById('subview-table').classList.add('hidden');
+                document.getElementById('subview-flowchart').classList.remove('hidden');
+                document.getElementById('sub-btn-flowchart').className = "py-2 rounded-xl font-fun font-bold text-xs md:text-sm bg-white text-purple-700 shadow-sm";
+                document.getElementById('sub-btn-table').className = "py-2 rounded-xl font-fun font-bold text-xs md:text-sm text-slate-600 hover:text-slate-800";
+                renderFlowchart();
+            }
+        }
+
+        function highlightTableRow(row) {
+            playSound('click');
+            document.querySelectorAll('tbody tr').forEach(r => r.classList.remove('bg-purple-100'));
+            row.classList.add('bg-purple-100');
+        }
+
+        const flowchartData = {
+            tbc: [
+                { step: "1. Pemicu / Penyebab", title: "Masuknya Bakteri TBC", desc: "Bakteri Mycobacterium tuberculosis terhirup ke saluran napas.", icon: "🦠", color: "bg-rose-100 text-rose-800 border-rose-300" },
+                { step: "2. Proses Peradangan", title: "Infeksi Jaringan Paru", desc: "Bakteri merusak jaringan alveoli dan membentuk sarang infeksi.", icon: "🫁", color: "bg-amber-100 text-amber-800 border-amber-300" },
+                { step: "3. Nama Gangguan", title: "Tuberkulosis (TBC)", desc: "Terjadi gangguan pertukaran gas secara kronis.", icon: "⚠️", color: "bg-purple-100 text-purple-800 border-purple-300" },
+                { step: "4. Gejala Utama", title: "Batuk Lama & Keringat Malam", desc: "Batuk berdahak >2 minggu, badan makin kurus dan lemah.", icon: "🩺", color: "bg-teal-100 text-teal-800 border-teal-300" }
+            ],
+            flu: [
+                { step: "1. Pemicu / Penyebab", title: "Terpapar Virus Influenza", desc: "Virus menular lewat percikan batuk/bersin di udara.", icon: "🤧", color: "bg-rose-100 text-rose-800 border-rose-300" },
+                { step: "2. Proses Peradangan", title: "Iritasi Saluran Hidung", desc: "Virus menginfeksi mukosa hidung dan tenggorokan.", icon: "🧪", color: "bg-amber-100 text-amber-800 border-amber-300" },
+                { step: "3. Nama Gangguan", title: "Influenza (Flu)", desc: "Tubuh merespons dengan sistem imun mendadak.", icon: "🌡️", color: "bg-purple-100 text-purple-800 border-purple-300" },
+                { step: "4. Gejala Utama", title: "Demam, Bersin & Pilek", desc: "Hidung tersumbat, pegal linu, lemas 3-7 hari.", icon: "💊", color: "bg-teal-100 text-teal-800 border-teal-300" }
+            ],
+            polusi: [
+                { step: "1. Pemicu / Penyebab", title: "Asap Kendaraan / Pabrik", desc: "Partikel racun udara kotor masuk ke hidung.", icon: "🏭", color: "bg-rose-100 text-rose-800 border-rose-300" },
+                { step: "2. Proses Peradangan", title: "Iritasi Akut Saluran Atas", desc: "Dinding tenggorokan bengkak & memproduksi lendir.", icon: "💨", color: "bg-amber-100 text-amber-800 border-amber-300" },
+                { step: "3. Nama Gangguan", title: "ISPA Akut", desc: "Infeksi pernapasan akibat racun polusi lingkungan.", icon: "😷", color: "bg-purple-100 text-purple-800 border-purple-300" },
+                { step: "4. Gejala Utama", title: "Batuk & Tenggorokan Gatal", desc: "Suara serak, tenggorokan sakit saat menelan.", icon: "🩹", color: "bg-teal-100 text-teal-800 border-teal-300" }
+            ],
+            asma: [
+                { step: "1. Pemicu / Penyebab", title: "Debu / Dingin / Genetik", desc: "Pemicu alergi merangsang reaksi sensitif paru.", icon: "🌾", color: "bg-rose-100 text-rose-800 border-rose-300" },
+                { step: "2. Proses Peradangan", title: "Otot Bronkus Mengencang", desc: "Saluran napas menyempit & membengkak penuh lendir.", icon: "⚡", color: "bg-amber-100 text-amber-800 border-amber-300" },
+                { step: "3. Nama Gangguan", title: "Serangan Asma", desc: "Penyempitan lumen saluran pernapasan.", icon: "🫁", color: "bg-purple-100 text-purple-800 border-purple-300" },
+                { step: "4. Gejala Utama", title: "Sesak & Suara Mengi", desc: "Suara 'ngik-ngik' nyaring saat menghembuskan napas.", icon: "🔊", color: "bg-teal-100 text-teal-800 border-teal-300" }
+            ],
+            pneumonia: [
+                { step: "1. Pemicu / Penyebab", title: "Infeksi Streptococcus", desc: "Bakteri/virus menyusup hingga ke alveoli mendalam.", icon: "🧫", color: "bg-rose-100 text-rose-800 border-rose-300" },
+                { step: "2. Proses Peradangan", title: "Penumpukan Cairan Radang", desc: "Kantung udara dipenuhi pus/nanah akibat infeksi.", icon: "🫧", color: "bg-amber-100 text-amber-800 border-amber-300" },
+                { step: "3. Nama Gangguan", title: "Pneumonia", desc: "Dikenal juga sebagai paru-paru basah.", icon: "🚨", color: "bg-purple-100 text-purple-800 border-purple-300" },
+                { step: "4. Gejala Utama", title: "Sesak Berat & Bernapas Cepat", desc: "Dada sakit saat napas, kadar oksigen menurun.", icon: "🩺", color: "bg-teal-100 text-teal-800 border-teal-300" }
+            ]
+        };
+
+        function renderFlowchart() {
+            playSound('click');
+            const selected = document.getElementById('flowchartSelector').value;
+            const steps = flowchartData[selected];
+            const container = document.getElementById('flowchartResult');
+
+            let html = '';
+            steps.forEach((st, idx) => {
+                html += `
+                    <div class="border-2 rounded-2xl p-4 ${st.color} shadow-sm space-y-1 transition duration-300 animate-in fade-in">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/60">${st.step}</span>
+                            <span class="text-xl">${st.icon}</span>
+                        </div>
+                        <h4 class="font-fun font-bold text-sm md:text-base">${st.title}</h4>
+                        <p class="text-xs opacity-90 leading-relaxed">${st.desc}</p>
+                    </div>
+                `;
+
+                if (idx < steps.length - 1) {
+                    html += `
+                        <div class="flex justify-center text-purple-500 my-1">
+                            <i class="fa-solid fa-down-long text-xl animate-bounce"></i>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+    </script>
+
+    <script>
+        const quizQuestions = [
+            {
+                question: "Kasus 1: Pak Anton mengalami batuk berdahak yang tak kunjung sembuh selama 3 minggu. Di malam hari ia sering berkeringat dingin dan badannya makin kurus. Hasil tes dokter menunjukkan infeksi bakteri Mycobacterium. Gangguan apa yang dialami Pak Anton?",
+                options: ["A. Asma Keturunan", "B. Tuberkulosis (TBC)", "C. Influenza Akut", "D. ISPA ringan"],
+                answer: 1,
+                explanation: "TBC disebabkan oleh bakteri Mycobacterium tuberculosis dengan ciri khas batuk lama (>2 minggu), keringat dingin malam hari, dan penurunan berat badan."
+            },
+            {
+                question: "Kasus 2: Dito tiba-tiba merasa sesak napas setelah bermain di tempat berdebu. Saat mengembuskan napas, terdengar suara tinggi berbunyi 'ngik-ngik' (mengi). Ayah Dito juga memiliki riwayat alergi serupa. Gangguan apakah ini?",
+                options: ["A. Pneumonia", "B. Influenza", "C. Asma", "D. TBC Paru"],
+                answer: 2,
+                explanation: "Ciri khas utama Asma adalah suara 'mengi' akibat penyempitan saluran napas yang dipicu oleh faktor alergen (debu) dan sifat genetik keturunan."
+            },
+            {
+                question: "Kasus 3: Dokter memeriksa hasil rontgen paru-paru pasien dan menemukan bahwa kantung udara (alveoli) terisi oleh cairan nanah akibat infeksi bakteri. Pasien mengalami sesak napas berat dan demam tinggi. Diagnosis yang tepat adalah...",
+                options: ["A. Pneumonia (Paru-Paru Basah)", "B. Influenza Menular", "C. Flu Burung", "D. Asma Akut"],
+                answer: 0,
+                explanation: "Pneumonia terjadi saat kantung udara (alveoli) terinfeksi hingga meradang dan terisi cairan/nanah, mengganggu pertukaran oksigen."
+            },
+            {
+                question: "Kasus 4: Warga yang tinggal di dekat kawasan pabrik industri dengan kabut asap pekat banyak yang mengeluhkan batuk, tenggorokan gatal, dan hidung tersumbat secara mendadak. Faktor utama penyebab gangguan ISPA ini adalah...",
+                options: ["A. Faktor Genetik Keluarga", "B. Polusi Udara & Asap Pabrik", "C. Makanan Berminyak", "D. Kurang Tidur Malam"],
+                answer: 1,
+                explanation: "ISPA sering kali dipicu secara mendadak oleh tingkat polusi udara tinggi, asap kendaraan, maupun asap pabrik yang mengiritasi saluran pernapasan."
+            },
+            {
+                question: "Kasus 5: Seorang remaja gemar merokok dan menggunakan vape. Zat berbahaya lengket seperti aspal yang dapat mengendap dan merusak dinding paru-parunya dinamakan...",
+                options: ["A. Nikotin", "B. Karbon Monoksida", "C. Tar", "D. Oksigen"],
+                answer: 2,
+                explanation: "Tar adalah komponen berbahaya dalam rokok/vape yang bersifat lengket dan mengendap di paru-paru, merusak silia pembersih udara."
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+        let userScore = 0;
+        let answered = false;
+
+        function renderQuizQuestion() {
+            answered = false;
+            const q = quizQuestions[currentQuestionIdx];
+
+            document.getElementById('quizStepText').innerText = `Soal ${currentQuestionIdx + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quizProgressBar').style.width = `${((currentQuestionIdx + 1) / quizQuestions.length) * 100}%`;
+
+            document.getElementById('quizQuestion').innerText = q.question;
+            document.getElementById('quizFeedback').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn text-left p-3.5 rounded-2xl border-2 border-slate-200 font-semibold text-xs md:text-sm text-slate-700 hover:border-pink-300 hover:bg-pink-50 transition active:scale-98 flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-300 text-lg"></i>`;
+                btn.onclick = () => checkAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx, btnEl) {
+            if (answered) return;
+            answered = true;
+
+            const q = quizQuestions[currentQuestionIdx];
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            const feedbackBox = document.getElementById('quizFeedback');
+            const feedbackHeader = document.getElementById('feedbackHeader');
+            const feedbackText = document.getElementById('feedbackText');
+
+            // Disable all buttons
+            allBtns.forEach(b => b.classList.add('pointer-events-none'));
+
+            if (selectedIdx === q.answer) {
+                playSound('correct');
+                userScore += 20;
+                btnEl.className = "quiz-opt-btn text-left p-3.5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-bold text-xs md:text-sm text-emerald-900 flex items-center justify-between shadow-sm";
+                btnEl.querySelector('i').className = "fa-solid fa-circle-check text-emerald-500 text-xl";
+
+                feedbackBox.className = "p-4 rounded-2xl border-2 border-emerald-300 bg-emerald-50 space-y-2 mt-2";
+                feedbackHeader.className = "flex items-center gap-2 font-fun font-bold text-sm text-emerald-800";
+                feedbackHeader.innerHTML = `<i class="fa-solid fa-circle-check text-xl"></i> Jawaban Kamu Benar! Tepat Sekali Detektif!`;
+            } else {
+                playSound('wrong');
+                btnEl.className = "quiz-opt-btn text-left p-3.5 rounded-2xl border-2 border-rose-400 bg-rose-50 font-bold text-xs md:text-sm text-rose-900 flex items-center justify-between";
+                btnEl.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-500 text-xl";
+
+                // highlight correct one
+                allBtns[q.answer].className = "quiz-opt-btn text-left p-3.5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-bold text-xs md:text-sm text-emerald-900 flex items-center justify-between";
+                allBtns[q.answer].querySelector('i').className = "fa-solid fa-circle-check text-emerald-500 text-xl";
+
+                feedbackBox.className = "p-4 rounded-2xl border-2 border-rose-300 bg-rose-50 space-y-2 mt-2";
+                feedbackHeader.className = "flex items-center gap-2 font-fun font-bold text-sm text-rose-800";
+                feedbackHeader.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-xl"></i> Kurang Tepat, Jangan Patah Semangat!`;
+            }
+
+            feedbackText.innerText = q.explanation;
+            feedbackBox.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            currentQuestionIdx++;
+            if (currentQuestionIdx < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            playSound('fanfare');
+            document.getElementById('quizContainer').classList.add('hidden');
+            const resultModal = document.getElementById('quizResultModal');
+            resultModal.classList.remove('hidden');
+
+            document.getElementById('finalScore').innerText = userScore;
+
+            let badge = "Detektif Pemula 🔍";
+            if (userScore === 100) badge = "Detektif Utama ⭐⭐⭐";
+            else if (userScore >= 80) badge = "Detektif Handal 🌟🌟";
+            else if (userScore >= 60) badge = "Detektif Cermat 🌟";
+
+            document.getElementById('finalBadge').innerText = badge;
+
+            // Trigger confetti effect
+            createConfetti();
+        }
+
+        function restartQuiz() {
+            playSound('click');
+            currentQuestionIdx = 0;
+            userScore = 0;
+            document.getElementById('quizResultModal').classList.add('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+            renderQuizQuestion();
+        }
+
+        function createConfetti() {
+            const colors = ['#f43f5e', '#0284c7', '#0d9488', '#eab308', '#8b5cf6'];
+            const container = document.getElementById('quizResultModal');
+            for (let i = 0; i < 25; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti-piece';
+                conf.style.left = Math.random() * 80 + 10 + '%';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDelay = Math.random() * 0.5 + 's';
+                container.appendChild(conf);
+                setTimeout(() => conf.remove(), 2500);
+            }
+        }
+
+        // Initialize quiz on load
+        window.onload = function() {
+            renderQuizQuestion();
+        }
+    </script>
+</body>
+</html>
